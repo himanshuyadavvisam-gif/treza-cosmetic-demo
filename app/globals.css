@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+/* "Wide" = the side-by-side showcase layout: desktops, and phones/tablets held in landscape.
+   Portrait tablets get the stacked phone layout. Keep in sync with WIDE_QUERY in lib/webgl.ts. */
+@custom-variant wide {
+  @media (min-width: 1024px) {
+    @slot;
+  }
+  @media (orientation: landscape) and (min-width: 640px) {
+    @slot;
+  }
+}
+
+/* Phones held in landscape: very little height, so pinned scenes get a compact layout. */
+@custom-variant short (@media (orientation: landscape) and (max-height: 500px));
+
+/* Brand palette, taken from the Treza logo and pack labels (olive green, white bottles, herbal sage).
+   Change these to re-theme the whole site (Tailwind colours map onto them below).
+   Naming: ink = page background, bone = main text, gold = brand accent. */
+:root {
+  --bg: #e6eadb;
+  --bg-2: #dde2cf;
+  --bg-3: #d0d7bd;
+  --fg: #1c2612;
+  --mist: #535d45;
+  --accent: #5a6b2e;
+  --accent-deep: #45531f;
+  /* Glow colour as "r g b" so it can take an alpha: rgb(var(--glow) / 0.3). */
+  --glow: 255 255 250;
+  --cream: #f8f9f1;
+  --cocoa: #1c2612;
+  --bronze: #4a5a20;
+  --shadow: 38 48 20;
+}
+
+/* Deep forest sections (Ayurveda, footer): same tokens, inverted. */
+.theme-dark {
+  --bg: #1a2312;
+  --bg-2: #1f2a16;
+  --bg-3: #29351d;
+  --fg: #eef1e4;
+  --mist: #a9b395;
+  --accent: #b9cb7c;
+  --accent-deep: #93a85a;
+  --glow: 150 178 78;
+  color: var(--fg);
+}
+
+@theme inline {
+  --color-ink: var(--bg);
+  --color-ink-2: var(--bg-2);
+  --color-ink-3: var(--bg-3);
+  --color-bone: var(--fg);
+  --color-mist: var(--mist);
+  --color-gold: var(--accent);
+  --color-gold-deep: var(--accent-deep);
+  --color-cream: var(--cream);
+  --color-cocoa: var(--cocoa);
+  --color-bronze: var(--bronze);
+}
+
+@theme {
+  --font-display: var(--font-cormorant), ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --animate-marquee: marquee 42s linear infinite;
+  --animate-float: float 7s ease-in-out infinite alternate;
+  --animate-spin-slow: spin 60s linear infinite;
+  --animate-cue: cue 2.2s ease-in-out infinite;
+  --animate-nudge: nudge 1.8s ease-in-out infinite;
+
+  @keyframes nudge {
+    0%,
+    100% {
+      transform: translateY(-1px);
+    }
+    50% {
+      transform: translateY(2px);
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes float {
+    from {
+      transform: translate3d(0, -6px, 0);
+    }
+    to {
+      transform: translate3d(0, 8px, 0);
+    }
+  }
+  @keyframes cue {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    50% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    51% {
+      transform: scaleY(1);
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Cormorant defaults to old-style figures, which reads "01" as "OI" — force lining numerals. */
+  .font-display {
+    font-weight: 500;
+    font-variant-numeric: lining-nums;
+    font-feature-settings: "lnum" 1;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .gold-text {
+    background-image: linear-gradient(180deg, #7f9443 0%, #5a6b2e 50%, #3f4c1b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .stage-glow {
+    box-shadow:
+      0 40px 80px -24px rgb(var(--shadow) / 0.45),
+      0 0 70px -12px rgb(var(--glow) / 0.28);
+  }
+
+  /* Background-removed product shots floating on the dark stage. */
+  .product-cutout {
+    filter: drop-shadow(0 30px 30px rgb(var(--shadow) / 0.35)) drop-shadow(0 0 40px rgb(255 255 255 / 0.6));
+  }
+
+  /* ---- Cinematic showcase ---- */
+
+  /* Warm light behind the 3D stage; its opacity is driven per frame by the stage timeline. */
+  .stage-backdrop {
+    opacity: 0.6;
+    background:
+      radial-gradient(55% 50% at 50% 0%, rgb(var(--glow) / 0.85), transparent 72%),
+      radial-gradient(40% 36% at 100% 100%, rgb(171 189 120 / 0.35), transparent 70%),
+      radial-gradient(36% 32% at 0% 62%, rgb(171 189 120 / 0.25), transparent 70%);
+  }
+
+  /* Canvas fades in once ready; the static product photos fade out underneath it. */
+  .stage-canvas {
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  html[data-stage="on"] .stage-canvas {
+    opacity: 1;
+  }
+  .stage-static {
+    transition: opacity 0.9s ease 0.15s;
+  }
+  html[data-stage="on"] .stage-static {
+    opacity: 0;
+  }
+
+  /* Mega-type: a light sweep that travels across every letter as one continuous gradient. */
+  .mega-word {
+    animation: mega-sweep 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  .mega-letter {
+    color: transparent;
+    background-image: linear-gradient(
+      100deg,
+      var(--fg) calc(var(--sweep) - 16%),
+      var(--accent) calc(var(--sweep) - 5%),
+      #fffaf0 var(--sweep),
+      var(--accent) calc(var(--sweep) + 5%),
+      var(--fg) calc(var(--sweep) + 16%)
+    );
+    background-size: calc(var(--n) * 100%) 100%;
+    background-position: calc(var(--i) / (var(--n) - 1) * 100%) 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  /* Soft film grain over the whole page for a tactile, premium feel. */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+}
+
+@property --sweep {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: -30%;
+}
+
+@keyframes mega-sweep {
+  0% {
+    --sweep: -30%;
+  }
+  60%,
+  100% {
+    --sweep: 130%;
+  }
+}
+
+/* Reduced motion: stop ambient animation, keep everything readable. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
