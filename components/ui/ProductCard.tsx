@@ -1,16 +1,13 @@
 import Image from "next/image";
 import { formatPrice } from "@/lib/format";
-import { productHref, type Product } from "@/lib/data";
+import { productId, type Product } from "@/lib/data";
 
 export default function ProductCard({ product, preload = false }: { product: Product; preload?: boolean }) {
   const onSale = typeof product.compareAt === "number" && product.compareAt > product.price;
 
   return (
-    <a
-      href={productHref(product)}
-      className="group block rounded-[22px] focus-visible:outline-offset-4"
-      aria-label={`${product.title}, ${formatPrice(product.price)}`}
-    >
+    // "Shop" buttons elsewhere on the page scroll here (#product-<handle>).
+    <article id={productId(product)} className="group block scroll-mt-28 rounded-[22px]" aria-label={`${product.title}, ${formatPrice(product.price)}`}>
       <div className="relative aspect-[3/4] overflow-hidden rounded-[22px] border border-gold/15 bg-[radial-gradient(ellipse_at_50%_40%,#ffffff_0%,#eef1e5_100%)] transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-gold/60 group-hover:shadow-[0_30px_60px_-20px_rgb(var(--shadow)/0.35)]">
         <Image
           src={product.image}
@@ -37,6 +34,6 @@ export default function ProductCard({ product, preload = false }: { product: Pro
           {onSale && <span className="mt-0.5 text-mist line-through">{formatPrice(product.compareAt as number)}</span>}
         </p>
       </div>
-    </a>
+    </article>
   );
 }

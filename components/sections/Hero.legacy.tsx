@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { HERO_PRODUCTS } from "@/lib/data";
-import { shopHref } from "@/lib/config";
+import { SHOP_ANCHOR } from "@/lib/config";
 
 type Slot = {
   /** Horizontal offset as a fraction of half the scene width. */
@@ -242,13 +242,13 @@ export default function Hero() {
         </p>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <a
-            href={shopHref("/collections/bestseller")}
+            href={SHOP_ANCHOR}
             className="rounded-full bg-gradient-to-b from-[#ecd08f] to-[#b98c45] px-8 py-3.5 text-[13px] font-semibold uppercase tracking-[0.16em] text-ink shadow-[0_10px_40px_-10px_rgba(216,182,115,0.6)] transition-transform duration-300 hover:-translate-y-0.5"
           >
             Shop Best Sellers
           </a>
           <a
-            href={shopHref("/collections/new-launch")}
+            href={SHOP_ANCHOR}
             className="rounded-full border border-gold/40 px-8 py-3.5 text-[13px] font-semibold uppercase tracking-[0.16em] text-bone transition-colors duration-300 hover:border-gold hover:text-gold"
           >
             New Launches

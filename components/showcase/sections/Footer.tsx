@@ -4,17 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { EASE } from "@/lib/easing";
-import { BRAND, PROMO_CODE, PROMO_TEXT, SHOP_URL, shopHref } from "@/lib/config";
-import { CATEGORIES, FOOTER_LINKS } from "@/lib/data";
+import { BRAND, PROMO_CODE, PROMO_TEXT, SHOP_ANCHOR } from "@/lib/config";
+import { FOOTER_LINKS } from "@/lib/data";
 import { FOOTER_CTA } from "@/lib/showcase";
 import LetterRoll from "@/components/showcase/ui/LetterRoll";
 
 const ParticleField = dynamic(() => import("@/components/showcase/ui/ParticleField"), { ssr: false });
 
 const COLUMNS = [
-  { title: "Shop", links: CATEGORIES.map((c) => ({ label: c.name, href: c.href })) },
   { title: "Explore", links: FOOTER_LINKS.explore },
-  { title: "Customer service", links: FOOTER_LINKS.support },
+  { title: "Help", links: FOOTER_LINKS.support },
 ];
 
 export default function Footer() {
@@ -83,42 +82,19 @@ export default function Footer() {
             </span>
           </p>
           <a
-            href={shopHref("/collections/all")}
+            href={SHOP_ANCHOR}
             className="mt-10 inline-flex items-center gap-3 rounded-full bg-bone px-7 py-4 text-[12px] font-bold uppercase tracking-[0.2em] text-ink transition-colors hover:bg-gold"
           >
             Shop Treza <span aria-hidden="true">→</span>
           </a>
         </div>
 
-        <div className="mt-24 grid gap-14 border-t border-dotted border-bone/20 pt-14 sm:grid-cols-2 md:mt-32 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+        <div className="mt-24 grid gap-14 border-t border-dotted border-bone/20 pt-14 sm:grid-cols-2 md:mt-32 lg:grid-cols-[2fr_1fr_1fr]">
           <div>
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.3em] text-gold">Newsletter</h2>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-mist">New launches and offers, straight from the Treza store.</p>
-            {/* Posts to the Shopify storefront's built-in customer newsletter form. */}
-            <form action={`${SHOP_URL}/contact#newsletter`} method="post" acceptCharset="UTF-8" className="mt-6 max-w-sm">
-              <input type="hidden" name="form_type" value="customer" />
-              <input type="hidden" name="utf8" value="✓" />
-              <input type="hidden" name="contact[tags]" value="newsletter" />
-              <label htmlFor="newsletter-email" className="sr-only">
-                Email address
-              </label>
-              <div className="flex items-center border-b border-bone/30 transition-colors focus-within:border-gold">
-                <input
-                  id="newsletter-email"
-                  type="email"
-                  name="contact[email]"
-                  required
-                  autoComplete="email"
-                  placeholder="Your email"
-                  className="min-w-0 flex-1 bg-transparent py-3 text-[15px] text-bone placeholder:text-mist/70 focus:outline-none"
-                />
-                <button type="submit" aria-label="Subscribe" className="grid size-11 place-items-center text-bone transition-colors hover:text-gold">
-                  <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                    <path d="M4 12h16M14 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
-            </form>
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.3em] text-gold">Treza Cosmetic</h2>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-mist">
+              Ayurveda + Science. Dermatologist tested, cruelty free and safe for every skin type.
+            </p>
           </div>
 
           {COLUMNS.map((column) => (
@@ -127,7 +103,7 @@ export default function Footer() {
               <ul className="mt-4 space-y-1">
                 {column.links.map((link) => (
                   <li key={link.label}>
-                    <LetterRoll href={link.href} label={link.label} className="text-sm text-bone/75" />
+                    <LetterRoll href={link.href} label={link.label} external={link.href.startsWith("http")} className="text-sm text-bone/75" />
                   </li>
                 ))}
               </ul>

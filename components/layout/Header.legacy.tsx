@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { NAV_LINKS } from "@/lib/data";
-import { shopHref } from "@/lib/config";
+import { SHOP_ANCHOR } from "@/lib/config";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -51,7 +51,7 @@ export default function Header() {
 
         <div className="flex items-center gap-2">
           <a
-            href={shopHref("/cart")}
+            href={SHOP_ANCHOR}
             aria-label="View cart"
             className="grid size-11 place-items-center rounded-full text-bone transition-colors hover:text-gold"
           >

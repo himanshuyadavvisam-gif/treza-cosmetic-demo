@@ -5,8 +5,6 @@ import { gsap } from "@/lib/gsap";
 import { EASE } from "@/lib/easing";
 import { getActiveSection, subscribeActiveSection } from "@/lib/scrollStore";
 import { SECTION_LABELS, SHOWCASE_NAV } from "@/lib/showcase";
-import { NAV_LINKS } from "@/lib/data";
-import { shopHref } from "@/lib/config";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
@@ -93,16 +91,6 @@ export default function Nav() {
         </nav>
 
         <div className="flex items-center gap-1">
-          <a
-            href={shopHref("/cart")}
-            aria-label="View cart"
-            className="grid size-11 place-items-center rounded-full text-bone transition-colors hover:text-gold"
-          >
-            <svg viewBox="0 0 24 24" className="size-[22px]" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M6 8h12l-1 12H7L6 8Z" />
-              <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-            </svg>
-          </a>
           <button
             type="button"
             onClick={() => setOpen((value) => !value)}
@@ -132,13 +120,6 @@ export default function Nav() {
               {link.label}
             </a>
           ))}
-          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3">
-            {NAV_LINKS.map((link) => (
-              <a key={link.label} href={link.href} className="text-[11px] font-semibold uppercase tracking-[0.24em] text-mist hover:text-gold">
-                {link.label}
-              </a>
-            ))}
-          </div>
         </nav>
       </div>
 

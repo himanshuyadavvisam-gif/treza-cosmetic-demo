@@ -51,8 +51,10 @@ export const metadata: Metadata = {
     locale: "en_IN",
     images: [
       {
-        url: "https://cdn.shopify.com/s/files/1/0909/3454/2621/files/117_1_copy.jpg?width=1200",
-        alt: "Treza Protin Hair Mask",
+        url: "/showcase/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Treza Pro-Vitamin Shampoo",
       },
     ],
   },

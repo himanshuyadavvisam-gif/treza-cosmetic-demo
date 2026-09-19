@@ -1,5 +1,5 @@
 import Reveal from "@/components/ui/Reveal";
-import { PROMO_CODE, PROMO_TEXT, shopHref } from "@/lib/config";
+import { PROMO_CODE, PROMO_TEXT, SHOP_ANCHOR } from "@/lib/config";
 
 export default function CallToAction() {
   return (
@@ -24,7 +24,7 @@ export default function CallToAction() {
           for {PROMO_TEXT}.
         </p>
         <a
-          href={shopHref("/collections/all")}
+          href={SHOP_ANCHOR}
           className="mt-10 rounded-full bg-gradient-to-b from-[#ecd08f] to-[#b98c45] px-10 py-4 text-[13px] font-semibold uppercase tracking-[0.16em] text-ink shadow-[0_10px_40px_-10px_rgba(216,182,115,0.6)] transition-transform duration-300 hover:-translate-y-0.5"
         >
           Shop the collection

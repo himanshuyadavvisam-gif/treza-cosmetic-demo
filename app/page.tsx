@@ -43,15 +43,15 @@ const jsonLd = {
         item: {
           "@type": "Product",
           name: product.title,
-          image: product.shopImage,
-          url: productHref(product),
+          image: `${SITE_URL}${product.image}`,
+          url: `${SITE_URL}/${productHref(product)}`,
           brand: { "@type": "Brand", name: BRAND.name },
           offers: {
             "@type": "Offer",
             price: product.price,
             priceCurrency: "INR",
             availability: "https://schema.org/InStock",
-            url: productHref(product),
+            url: `${SITE_URL}/${productHref(product)}`,
           },
         },
       })),
@@ -59,10 +59,10 @@ const jsonLd = {
     // Featured products of the showcase, with their full descriptions.
     ...VARIANTS.map((variant) => ({
       "@type": "Product",
-      "@id": `${productHref(variant.product)}#product`,
+      "@id": `${SITE_URL}/${productHref(variant.product)}`,
       name: variant.product.title,
       description: variant.id === "pro-vitamin" ? HERO.body : `${variant.name} Shampoo — ${variant.tagline}.`,
-      image: [variant.product.shopImage],
+      image: [`${SITE_URL}${variant.product.image}`],
       brand: { "@type": "Brand", name: BRAND.name },
       category: "Shampoo",
       offers: {
@@ -70,7 +70,7 @@ const jsonLd = {
         price: variant.product.price,
         priceCurrency: "INR",
         availability: "https://schema.org/InStock",
-        url: productHref(variant.product),
+        url: `${SITE_URL}/${productHref(variant.product)}`,
       },
     })),
     {

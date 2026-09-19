@@ -1,8 +1,12 @@
-/** Public URL of the Shopify storefront that products, cart and policies live on. */
-export const SHOP_URL = (process.env.NEXT_PUBLIC_SHOP_URL ?? "https://www.trezacosmetic.com").replace(/\/$/, "");
-
-/** Public URL where this homepage is deployed (used for metadata, sitemap and JSON-LD). */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.trezacosmetic.com").replace(/\/$/, "");
+/**
+ * Public URL where this site is deployed (metadata, sitemap, JSON-LD).
+ * Set NEXT_PUBLIC_SITE_URL in production; on Vercel the project URL is used automatically.
+ * The site never links out to an external store — every "shop" action stays on this page.
+ */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000")
+).replace(/\/$/, "");
 
 export const BRAND = {
   name: "Treza Cosmetic",
@@ -15,4 +19,5 @@ export const BRAND = {
 export const PROMO_CODE = "LAUNCH15";
 export const PROMO_TEXT = "15% off your first order";
 
-export const shopHref = (path: string): string => `${SHOP_URL}${path}`;
+/** In-page destination for every shop / collection call to action. */
+export const SHOP_ANCHOR = "#best-sellers";

@@ -1,7 +1,6 @@
 import ProductCard from "@/components/ui/ProductCard";
 import Reveal from "@/components/ui/Reveal";
 import { PRODUCTS } from "@/lib/data";
-import { shopHref } from "@/lib/config";
 
 export default function BestSellers() {
   return (
@@ -17,15 +16,6 @@ export default function BestSellers() {
               Best <span className="gold-text italic">sellers</span>
             </h2>
           </div>
-          <a
-            href={shopHref("/collections/bestseller")}
-            className="group inline-flex items-center gap-3 border-b border-gold/40 pb-1.5 text-[13px] font-semibold uppercase tracking-[0.16em] text-bone transition-colors hover:border-gold hover:text-gold"
-          >
-            View all
-            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
-              →
-            </span>
-          </a>
         </Reveal>
 
         <ul className="mt-14 grid grid-cols-2 gap-x-4 gap-y-12 md:mt-20 md:grid-cols-4 md:gap-x-6 md:gap-y-16">

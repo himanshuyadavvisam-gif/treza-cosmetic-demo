@@ -1,6 +1,4 @@
-import { BRAND, PROMO_CODE, PROMO_TEXT, shopHref } from "@/lib/config";
-
-const CDN = "https://cdn.shopify.com/s/files/1/0909/3454/2621/files";
+import { BRAND, PROMO_CODE, PROMO_TEXT, SHOP_ANCHOR } from "@/lib/config";
 
 export type Product = {
   handle: string;
@@ -11,12 +9,14 @@ export type Product = {
   compareAt?: number;
   /** Background-removed cut-out served from /public. */
   image: string;
-  /** Original packshot on the Shopify CDN (absolute URL, used in structured data). */
-  shopImage: string;
   imageAlt: string;
 };
 
-export const productHref = (product: Pick<Product, "handle">): string => shopHref(`/products/${product.handle}`);
+/** DOM id of a product's card in the Best Sellers grid. */
+export const productId = (product: Pick<Product, "handle">): string => `product-${product.handle}`;
+
+/** "Shop" links scroll to the product's own card on this page. */
+export const productHref = (product: Pick<Product, "handle">): string => `#${productId(product)}`;
 
 export const PRODUCTS: Product[] = [
   {
@@ -26,7 +26,6 @@ export const PRODUCTS: Product[] = [
     category: "Hair Care",
     price: 999,
     image: "/products/117-1.webp",
-    shopImage: `${CDN}/117_1_copy.jpg`,
     imageAlt: "Treza Protin Hair Mask for smooth and shiny hair",
   },
   {
@@ -36,7 +35,6 @@ export const PRODUCTS: Product[] = [
     category: "Skin Care",
     price: 499,
     image: "/products/107-1.webp",
-    shopImage: `${CDN}/107_1_copy.jpg`,
     imageAlt: "Treza Cosmetic All-in-One Face Wash",
   },
   {
@@ -46,7 +44,6 @@ export const PRODUCTS: Product[] = [
     category: "Waxing",
     price: 399,
     image: "/products/113-1.webp",
-    shopImage: `${CDN}/113_1_copy.jpg`,
     imageAlt: "Treza Sandalwood Herbal Best Wax Powder",
   },
   {
@@ -57,7 +54,6 @@ export const PRODUCTS: Product[] = [
     price: 349,
     compareAt: 499,
     image: "/products/115-1.webp",
-    shopImage: `${CDN}/115_1_copy.jpg`,
     imageAlt: "Treza Cosmetic Shikakai Amla Hair Oil, 150 ml",
   },
   {
@@ -67,7 +63,6 @@ export const PRODUCTS: Product[] = [
     category: "Hair Care",
     price: 799,
     image: "/products/112-1.webp",
-    shopImage: `${CDN}/112_1_copy.jpg`,
     imageAlt: "Treza Cosmetic Pro Vitamin Shampoo, 500 ml",
   },
   {
@@ -77,7 +72,6 @@ export const PRODUCTS: Product[] = [
     category: "Hair Care",
     price: 799,
     image: "/products/110-1.webp",
-    shopImage: `${CDN}/110_1_copy.jpg`,
     imageAlt: "Treza Cosmetic Pro-Damage Repair Shampoo, 500 ml",
   },
   {
@@ -87,7 +81,6 @@ export const PRODUCTS: Product[] = [
     category: "Hair Care",
     price: 1499,
     image: "/products/109-1.webp",
-    shopImage: `${CDN}/109_1_copy.jpg`,
     imageAlt: "Treza Cosmetic Pro-Damage Repair Shampoo, 900 ml",
   },
   {
@@ -97,7 +90,6 @@ export const PRODUCTS: Product[] = [
     category: "Hair Care",
     price: 1499,
     image: "/products/114-2.webp",
-    shopImage: `${CDN}/114_2_copy.jpg`,
     imageAlt: "Treza Cosmetic Pro Vitamin Shampoo, 900 ml",
   },
 ];
@@ -148,18 +140,18 @@ export const CHAPTERS: Chapter[] = [
 ];
 
 export const NAV_LINKS = [
-  { label: "Best Sellers", href: shopHref("/collections/bestseller") },
-  { label: "Skin Care", href: shopHref("/collections/skin-care") },
-  { label: "Hair Care", href: shopHref("/collections/hair-care") },
-  { label: "Bath & Body", href: shopHref("/collections/bath-body") },
-  { label: "Waxing", href: shopHref("/collections/wax") },
+  { label: "Best Sellers", href: SHOP_ANCHOR },
+  { label: "Skin Care", href: SHOP_ANCHOR },
+  { label: "Hair Care", href: SHOP_ANCHOR },
+  { label: "Bath & Body", href: SHOP_ANCHOR },
+  { label: "Waxing", href: SHOP_ANCHOR },
 ] as const;
 
 export const CATEGORIES = [
-  { name: "Skin Care", note: "Face washes, serums & de-tan care", href: shopHref("/collections/skin-care") },
-  { name: "Hair Care", note: "Shampoos, oils, masks & hair spa", href: shopHref("/collections/hair-care") },
-  { name: "Bath & Body", note: "Everyday body care rituals", href: shopHref("/collections/bath-body") },
-  { name: "Waxing", note: "Cream waxes & herbal wax powders", href: shopHref("/collections/wax") },
+  { name: "Skin Care", note: "Face washes, serums & de-tan care", href: SHOP_ANCHOR },
+  { name: "Hair Care", note: "Shampoos, oils, masks & hair spa", href: SHOP_ANCHOR },
+  { name: "Bath & Body", note: "Everyday body care rituals", href: SHOP_ANCHOR },
+  { name: "Waxing", note: "Cream waxes & herbal wax powders", href: SHOP_ANCHOR },
 ] as const;
 
 export const TRUST_BADGES = ["Cruelty Free", "Paraben Free", "Dermatologically Tested", "Hydrogen Peroxide Free"] as const;
@@ -203,18 +195,14 @@ export const FAQS = [
 
 export const FOOTER_LINKS = {
   explore: [
-    { label: "New Launches", href: shopHref("/collections/new-launch") },
-    { label: "Best Sellers", href: shopHref("/collections/bestseller") },
-    { label: "Acne", href: shopHref("/collections/acne-pimples") },
-    { label: "Exfoliation & Brightening", href: shopHref("/collections/exfoliation-brightening") },
-    { label: "Pigmentation", href: shopHref("/collections/pigmentation") },
-    { label: "Tanning", href: shopHref("/collections/tanning") },
+    { label: "The formula", href: "#formula" },
+    { label: "Ingredients", href: "#ingredients" },
+    { label: "Choose your shampoo", href: "#choose" },
+    { label: "Best sellers", href: SHOP_ANCHOR },
   ],
   support: [
-    { label: "Contact Us", href: shopHref("/pages/contact") },
-    { label: "Shipping Policy", href: shopHref("/policies/shipping-policy") },
-    { label: "Return & Refund Policy", href: shopHref("/policies/refund-policy") },
-    { label: "Privacy Policy", href: shopHref("/policies/privacy-policy") },
-    { label: "Terms & Conditions", href: shopHref("/policies/terms-of-service") },
+    { label: "FAQ", href: "#faq" },
+    { label: "Email us", href: `mailto:${BRAND.email}` },
+    { label: "Instagram", href: BRAND.instagram },
   ],
 } as const;
